@@ -1,12 +1,15 @@
 package PGObject::Composite::Role;
 
-use 5.006;
+use 5.008;
 use strict;
 use warnings FATAL => 'all';
 
+use Moo::Role;
+use PGObject::Composite;
+
 =head1 NAME
 
-PGObject::Composite::Role - The great new PGObject::Composite::Role!
+PGObject::Composite::Role - A Moo role interface for PGObject::Composite
 
 =head1 VERSION
 
@@ -19,34 +22,108 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+A simple package with mapped stored procs:
 
-Perhaps a little code snippet.
+  package myobj;
+  use Moo;
+  with 'PGObject::Composite::Role';
+  use PGObject::Type::Composite;
+  use PGObject::Util::DBMethod;
 
-    use PGObject::Composite::Role;
+  sub _get_dbh { DBI->connect(...); }
 
-    my $foo = PGObject::Composite::Role->new();
-    ...
+  has foo (is => 'ro');
+  has bar (is => 'ro');
 
-=head1 EXPORT
+  dbmethod save => (funcname => 'save', returns_objects => 1);
+  
+=head1 Properties and Builders
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+=head2 _dbh
 
-=head1 SUBROUTINES/METHODS
+This is the DBD::Pg database handle.  Must be overridden.
 
-=head2 function1
+Built by _get_dbh which application classes should override either directly or
+through an intermediate role.
 
 =cut
 
-sub function1 {
+has _dbh => (is => 'lazy', builder => '_get_dbh');
+
+sub _get_dbh {
+    die 'Must overload get_dbh!';
 }
 
-=head2 function2
+=head2 _funcschema
+
+This is the default function schema.  Default is 'public'
 
 =cut
 
-sub function2 {
+has _funcschema => (is => 'lazy', builder => '_get_funcschema');
+
+sub _get_funcschema { 'public' }
+
+=head2 _typeschema
+
+This is the schema under which the type is found.  Defaults to undef
+
+Builer is _get_typeschema
+
+=cut
+
+has _typeschema =>  (is => 'lazy', builder => '_get_typeschema');
+
+=head2 _typename
+
+Name of the type.  This should be overridden by subclasses directly.
+
+The builder is _get_typename
+
+=cut
+
+has _typename =>  (is => 'lazy', builder => '_get_typename');
+
+sub _get_typename { die 'Must override _get_typename' };
+
+=head1 METHODS
+
+=head2 call_procedure
+
+Calls a stored procedure with set properties from the object (dbh, etc).
+
+Must provide the following arguments:
+
+=over
+
+=item funcname
+
+Name of function
+
+=item args
+
+arrayref of argument values
+
+=back
+
+=cut
+
+sub call_procedure {
+    my @rows = PGObject::Composite::call_procedure(@_);
+    return @rows if wantarray;
+    return shift @rows;
+}
+
+=head2 call_dbmethod
+
+Calls a mapped method by arguments.  Handles things as per PGObject::Composite
+
+=cut
+
+sub call_dbmethod {
+    my @rows = PGObject::Composite::call_dbmethod(@_);
+    return @rows if wantarray;
+    return shift @rows;
 }
 
 =head1 AUTHOR
