@@ -1,15 +1,11 @@
 PGObject-Composite-Role
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+This provides Moo/Moose support for PGObject::Composite stored procedure
+mappings.  This module allows composite data structures to be mapped into 
+arguments of stored procedures with a variable named 'self' or 'in_self.'
 
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it to get an idea of the module's uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
+This can be used with PGObject::Type::Composite for PG Composite types or
+PGObject::Type::JSON for serializing to JSON.
 
 
 INSTALLATION
