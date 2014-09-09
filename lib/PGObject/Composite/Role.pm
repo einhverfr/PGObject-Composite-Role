@@ -66,13 +66,15 @@ sub _get_funcschema { 'public' }
 
 =head2 _typeschema
 
-This is the schema under which the type is found.  Defaults to undef
+This is the schema under which the type is found.  Defaults to public
 
-Builer is _get_typeschema
+Builer is _get_schema
 
 =cut
 
-has _typeschema =>  (is => 'lazy', builder => '_get_typeschema');
+has _typeschema =>  (is => 'lazy', builder => '_get_schema');
+
+sub _get_schema { 'public' };
 
 =head2 _typename
 
