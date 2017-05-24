@@ -67,11 +67,11 @@ has _funcschema => (is => 'lazy', builder => '_get_funcschema');
 
 This is the schema under which the type is found.  Defaults to public
 
-Builer is _get_schema
+Builer is _get_typeschema
 
 =cut
 
-has _typeschema =>  (is => 'lazy', builder => '_get_schema');
+has _typeschema =>  (is => 'lazy', builder => '_get_typeschema');
 
 =head2 _typename
 
@@ -101,6 +101,7 @@ Name of function
 
 arrayref of argument values
 
+=back
 
 =head2 call_dbmethod
 

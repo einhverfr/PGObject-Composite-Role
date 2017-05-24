@@ -21,7 +21,7 @@ WriteMakefile(
         'PGObject::Composite'       => 0,
         'Moo::Role'                 => 0,
         'PGObject'                  => '1.402.5',
-        'PGObject::Type::Composite' => 1.000001,
+        'PGObject::Type::Composite' => 1.000002,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'PGObject-Composite-Role-*' },
