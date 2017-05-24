@@ -18,10 +18,10 @@ WriteMakefile(
         'Test::More' => 0,
     },
     PREREQ_PM => {
-        'PGObject::Composite'       => 0,
+        'PGObject::Composite'       => 1.000002,
         'Moo::Role'                 => 0,
         'PGObject'                  => '1.402.5',
-        'PGObject::Type::Composite' => 1.000002,
+        'PGObject::Type::Composite' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'PGObject-Composite-Role-*' },
